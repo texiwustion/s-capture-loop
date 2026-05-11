@@ -27,12 +27,17 @@ else
 fi
 
 # 3. Optionally install cron
-read -p "Install daily cron job at 21:00? [y/N] " -r install_cron
+#   --cron: non-interactive install (e.g. npx skills add && install.sh --cron)
+INSTALL_CRON="${1:-}"
+if [[ "$INSTALL_CRON" == "--cron" ]]; then
+  install_cron="y"
+else
+  read -p "Install daily cron job at 21:00? [y/N] " -r install_cron
+fi
 if [[ "$install_cron" =~ ^[Yy]$ ]]; then
   SCRIPT="$SKILL_DIR/scripts/capture-loop.sh"
   chmod +x "$SCRIPT"
   CRON_ENTRY="0 21 * * * /bin/zsh -lc '$SCRIPT' >> /tmp/capture-loop-cron.log 2>&1 # capture-loop"
-  # Avoid duplicate entries
   (crontab -l 2>/dev/null | grep -v '# capture-loop'; echo "$CRON_ENTRY") | crontab -
   echo "[ok] cron installed: 0 21 * * *"
 else
