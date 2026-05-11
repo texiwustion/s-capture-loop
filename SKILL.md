@@ -5,7 +5,7 @@ description: 扫描 _now.md 未处理节 → 跨参照项目文档 → 分类搬
 
 # Capture Loop
 
-Scan `_now.md` for unprocessed sections, cross-reference project directories, and generate a classification plan HTML for human audit.
+Scan the configured `now_file` for unprocessed sections, cross-reference project directories, and generate a classification plan HTML for human audit.
 
 ## Trigger
 
@@ -14,19 +14,23 @@ Scan `_now.md` for unprocessed sections, cross-reference project directories, an
 
 ## Config
 
-Read `config.toml` in the skill directory first. If not found, use defaults from `config.example.toml`.
+**First step: read `config.toml`** from the skill directory. All paths below come from config, not hardcoded.
+
+If `config.toml` is not found, read `config.example.toml` and use its defaults.
 
 Key config sections:
-- `[paths]` — where _now.md, _what_how.md, inbox, box, review_queue, project_dir, output_dir live
-- `[extraction]` — `project_code_regex` to pull the 3-letter project code from section headers
-- `[routing]` — regex patterns for classifying content (command, sop, viewpoint, question)
+- `[paths]` — all file/directory paths (now_file, what_how_file, inbox_dir, box_dir, review_queue, project_dir, output_dir)
+- `[extraction]` — `project_code_regex` to pull the project code from section headers
+- `[routing]` — regex patterns for classifying content
 - `[project_docs]` — which files/dirs to read for cross-referencing
+
+**Config is the single source of truth.** Every path in this document is a config key reference.
 
 ## Execution
 
 ### Phase 1: Scan
 
-1. Read `_now.md` from `[paths].now_file`.
+1. Read the file at `[paths].now_file`.
 2. Find all H1/H2 sections.
 3. For each section:
    - If no `[processed:... hash:...]` marker → treat as unprocessed.
@@ -38,10 +42,10 @@ Key config sections:
 ### Phase 2: Cross-Reference
 
 For each section with a valid project code:
-1. Locate the project directory: `[paths].project_dir / <code>`.
-2. Read files listed in `[project_docs].read_docs` (README.md, AGENTS.md, CLAUDE.md).
-3. Read markdown files from `[project_docs].read_dirs` (docs/, m/).
-4. Skip dirs in `[project_docs].skip_dirs`.
+1. Locate the project directory: `[paths].project_dir/<code>`.
+2. Read files listed in `[project_docs].read_docs`.
+3. Read markdown files from `[project_docs].read_dirs`.
+4. Skip dirs listed in `[project_docs].skip_dirs`.
 
 ### Phase 3: Classify
 
@@ -49,11 +53,11 @@ For each section's content, apply routing regex from `[routing]`:
 
 | Pattern | Match | Destination |
 |---|---|---|
-| `command_regex` | Bash/sh/zsh code blocks | `_what_how.md` (append with `# 目的:` comment) |
-| `sop_regex` | Numbered steps, `# 目的:` headers | `_what_how.md` (append; if ≥3 related commands, wrap in `.sh` script) |
-| `viewpoint_regex` | Invariants, methodology claims | `inbox/` new fleeting note (assertion title + inline wikilinks) |
-| `question_regex` | Questions, TODOs, gaps | `inbox/` new fleeting note + `_review_queue.md` |
-| (none of above) | Pure context / narrative | Leave in `_now.md` |
+| `command_regex` | Bash/sh/zsh code blocks | `[paths].what_how_file` (append with `# 目的:` comment) |
+| `sop_regex` | Numbered steps, `# 目的:` headers | `[paths].what_how_file` (append; if ≥3 related commands, wrap in `.sh` script) |
+| `viewpoint_regex` | Invariants, methodology claims | `[paths].inbox_dir/` new fleeting note (assertion title + inline wikilinks) |
+| `question_regex` | Questions, TODOs, gaps | `[paths].inbox_dir/` new fleeting note + `[paths].review_queue` |
+| (none of above) | Pure context / narrative | Leave in `[paths].now_file` |
 
 **Quality rules (硬规则):**
 - Every command/SOP entry must include a `# 目的:` comment explaining what it does.
@@ -68,7 +72,7 @@ HTML structure:
 1. **Meta**: generation time, source sections, project docs read
 2. **Plan items**: each classified item shown with destination, full content (including `# 目的:` comments), reason for routing
 3. **Link audit**: for each inbox note, show which wikilinks appear in body (green) vs. which are missing (red) — enforce "链在句子里，不在列表里"
-4. **Staying put**: list content that remains in `_now.md`
+4. **Staying put**: list content that remains in `[paths].now_file`
 5. **Post-execution markers**: the `[processed:YYYY-MM-DD hash:xxxx]` lines that will be written
 
 ### Phase 5: Output
@@ -80,16 +84,16 @@ HTML structure:
 ### Phase 6: Execute (manual trigger only, NOT cron)
 
 After user audits the plan HTML and confirms via audio or text:
-1. Write each classified item to its destination file.
-2. Update `_now.md` section markers to `[processed:YYYY-MM-DD hash:xxxx]`.
-3. Report: "Moved X items → _what_how.md, Y items → inbox, Z items → review queue."
+1. Write each classified item to its destination (using paths from config).
+2. Update section markers in `[paths].now_file` to `[processed:YYYY-MM-DD hash:xxxx]`.
+3. Report: "Moved X items → what_how_file, Y items → inbox_dir, Z items → review_queue."
 
 ## Anti-Patterns
 
-- Do NOT modify `_now.md` during Phase 1-5 (scan/classify/generate). Only during Phase 6 (execute, after human audit).
-- Do NOT write to `box/` directly. All permanent notes go through `inbox/` first.
+- Do NOT modify `[paths].now_file` during Phase 1-5 (scan/classify/generate). Only during Phase 6 (execute, after human audit).
+- Do NOT write to `[paths].box_dir` directly. All permanent notes go through `[paths].inbox_dir` first.
 - Do NOT create wikilinks that don't appear in body text.
-- Do NOT skip cross-referencing project docs — `_now.md` content alone is insufficient.
+- Do NOT skip cross-referencing project docs — the now_file content alone is insufficient.
 
 ## Config Reference
 
