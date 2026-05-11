@@ -7,10 +7,10 @@ Scans `_now.md` for unprocessed sections, cross-references project directories, 
 ## Install
 
 ```bash
-git clone https://github.com/706lab/s-capture-loop ~/.claude/skills/capture-loop
-cp ~/.claude/skills/capture-loop/config.example.toml ~/.claude/skills/capture-loop/config.toml
-vim ~/.claude/skills/capture-loop/config.toml
-bash ~/.claude/skills/capture-loop/scripts/install.sh
+git clone https://github.com/706lab/s-capture-loop ~/.agents/capture-loop
+cp ~/.agents/capture-loop/config.example.toml ~/.agents/capture-loop/config.toml
+vim ~/.agents/capture-loop/config.toml
+bash ~/.agents/capture-loop/scripts/install.sh
 ```
 
 ## Usage

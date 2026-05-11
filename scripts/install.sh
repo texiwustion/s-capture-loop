@@ -3,7 +3,7 @@
 set -euo pipefail
 
 SKILL_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-CC_SKILLS_DIR="${CLAUDE_CODE_SKILLS_DIR:-$HOME/.claude/skills}"
+CC_SKILLS_DIR="${CLAUDE_CODE_SKILLS_DIR:-$HOME/.agents}"
 TARGET="$CC_SKILLS_DIR/capture-loop"
 
 echo "=== capture-loop installer ==="

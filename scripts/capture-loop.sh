@@ -3,7 +3,7 @@
 # Invokes codex in non-interactive mode to run the capture loop skill.
 set -euo pipefail
 
-SKILL_DIR="${CAPTURE_LOOP_DIR:-$HOME/.claude/skills/capture-loop}"
+SKILL_DIR="${CAPTURE_LOOP_DIR:-$HOME/.agents/capture-loop}"
 CONFIG="${SKILL_DIR}/config.toml"
 SKILL_MD="${SKILL_DIR}/SKILL.md"
 

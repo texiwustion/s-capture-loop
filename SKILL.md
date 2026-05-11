@@ -10,7 +10,7 @@ Scan the configured `now_file` for unprocessed sections, cross-reference project
 ## Trigger
 
 - **Manual**: `/capture-loop` in Claude Code
-- **Scheduled**: `codex exec --yolo "$(cat ~/.claude/skills/capture-loop/SKILL.md)"` via cron
+- **Scheduled**: `codex exec --yolo "$(cat ~/.agents/capture-loop/SKILL.md)"` via cron
 
 ## Config
 
