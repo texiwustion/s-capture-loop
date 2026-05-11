@@ -1,0 +1,58 @@
+# capture-loop config.example.toml
+# Copy to config.toml and edit paths/regex to match your setup.
+
+[paths]
+# _now.md — running cognitive buffer, sections organized by project code
+now_file = "~/csyu-zettel/inbox/_now.md"
+# _what_how.md — reference manual (commands, facts, SOPs)
+what_how_file = "~/csyu-zettel/_what_how.md"
+# inbox/ — pending-review fleeting notes
+inbox_dir = "~/csyu-zettel/inbox"
+# box/ — permanent notes (only moved here after human review)
+box_dir = "~/csyu-zettel/box"
+# _review_queue.md — spaced-repetition review queue
+review_queue = "~/csyu-zettel/_review_queue.md"
+# project_dir — parent directory of 3-letter project directories
+project_dir = "~/w/tmp"
+# output_dir — where classification plan HTML files are written
+output_dir = "~/w/tmp/o36/plans"
+
+[extraction]
+# Regex to extract project code from _now.md section headers.
+# Default: first non-whitespace token after optional prefix like "(A)9," or "17,"
+# Examples it should match:
+#   "# 17,ExN c910 缓存攻击"  → "ExN"
+#   "# bRP 神秘板子"          → "bRP"
+#   "# (A)9,Uie codex ccswitch" → "Uie"
+#   "# 4zQ interior designer" → "4zQ"
+project_code_regex = '^\s*#\s+(?:\([^)]*\))?(?:\d+,)?(\S+)'
+
+[routing]
+# Regex patterns for classifying content into destinations.
+# All patterns are case-insensitive and match against the full section text.
+
+# Commands: bash/sh/zsh code blocks
+command_regex = '```(?:bash|sh|zsh|shell)'
+
+# SOPs: numbered steps or # 目的: headers
+sop_regex = '(?:^\d+[\.\)]\s|^#+\s*目的[:：])'
+
+# Viewpoints / invariants: methodology claims
+viewpoint_regex = '(?:不变量|一旦破坏|关键选择|依赖的|实验.*思路|.*比.*更重要|心智模型)'
+
+# Questions / knowledge gaps: uncertainty markers
+question_regex = '(?:[?？]|不懂|需要确认|TODO|待确认|还不.*[清楚明确])'
+
+[schedule]
+# Cron schedule for daily auto-generation (minute hour)
+cron_time = "0 21"
+# Set to true to install cron job, false for manual-only
+enabled = false
+
+[project_docs]
+# Files to read in each project directory for cross-referencing
+read_docs = ["README.md", "AGENTS.md", "CLAUDE.md"]
+# Directories to scan for markdown files
+read_dirs = ["docs", "m"]
+# Directories to skip
+skip_dirs = ["node_modules", ".venv", ".git", "artifacts", "backups", "results", "remote", "scripts", "src", "tests"]

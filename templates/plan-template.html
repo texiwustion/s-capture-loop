@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>分类搬运策划方案 — {{DATE}}</title>
+<style>
+  :root {
+    --bg: #0d1117; --surface: #161b22; --border: #30363d;
+    --text: #c9d1d9; --dim: #8b949e; --accent: #58a6ff;
+    --green: #3fb950; --orange: #db6d28; --red: #f85149; --purple: #a371f7;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "SF Mono", monospace; background: var(--bg); color: var(--text); line-height: 1.6; padding: 2rem; max-width: 1000px; margin: 0 auto; }
+  h1 { color: var(--accent); font-size: 1.5rem; margin-bottom: 0.25rem; }
+  h2 { color: var(--purple); font-size: 1.1rem; margin: 2rem 0 0.75rem; padding-bottom: 0.25rem; border-bottom: 1px solid var(--border); }
+  h3 { color: var(--accent); font-size: 0.95rem; margin: 1.25rem 0 0.5rem; }
+  p { color: var(--dim); margin: 0.5rem 0; }
+  code { background: var(--surface); padding: 0.1em 0.3em; border-radius: 3px; font-size: 0.9em; color: var(--orange); }
+  pre { background: var(--surface); padding: 0.8rem; border-radius: 6px; overflow-x: auto; margin: 0.5rem 0; font-size: 0.82rem; border: 1px solid var(--border); }
+  .meta { color: var(--dim); font-size: 0.85rem; margin-bottom: 1.5rem; }
+  .plan-item { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; margin: 1rem 0; }
+  .plan-item h3 { margin-top: 0; }
+  .dest-tag { display: inline-block; padding: 0.15em 0.6em; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-right: 0.3rem; }
+  .dest-what { background: rgba(63,185,80,0.15); color: var(--green); }
+  .dest-inbox { background: rgba(163,113,247,0.15); color: var(--purple); }
+  .dest-queue { background: rgba(248,81,73,0.15); color: var(--red); }
+  .dest-stay { background: rgba(139,148,158,0.15); color: var(--dim); }
+  .reason { font-size: 0.85rem; color: var(--dim); margin-top: 0.5rem; }
+  .link-ok { color: var(--green); }
+  .link-bad { color: var(--red); }
+  .summary-box { background: rgba(88,166,255,0.06); border: 1px solid var(--accent); border-radius: 8px; padding: 1rem; margin: 1.5rem 0; }
+  table { width: 100%; border-collapse: collapse; margin: 0.75rem 0; font-size: 0.88rem; }
+  th, td { text-align: left; padding: 0.5rem 0.7rem; border-bottom: 1px solid var(--border); }
+  th { color: var(--accent); }
+  td { color: var(--dim); }
+  .status-pending { color: var(--orange); }
+  .status-ok { color: var(--green); }
+  hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+</style>
+</head>
+<body>
+
+<h1>分类搬运策划方案</h1>
+<p class="meta">生成时间: {{DATE}} {{TIME}} · 状态: <span class="status-pending">等待审计</span></p>
+
+<!-- PLAN ITEMS WILL BE INSERTED HERE BY AI -->
+
+<div class="summary-box">
+  <strong>Summary</strong><br>
+  <span id="summary-text">N sections scanned, M processed.</span>
+</div>
+
+<hr>
+<p style="color: var(--dim); font-size: 0.8rem;">capture-loop · {{DATE}}</p>
+</body>
+</html>
